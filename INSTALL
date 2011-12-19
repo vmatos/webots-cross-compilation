@@ -26,7 +26,7 @@ fi
 
 # Check if $DARWINOP exists 
 if [ -z "$DARWINOP" ]; then
-    echo " Please add DARWINOP var for Darwin's framework root. In my machine: \"/darwin\"
+    echo " Please add DARWINOP var for Darwin's framework root. In my machine: \"/darwin\" "
     exit 1
 fi  
 
