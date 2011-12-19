@@ -1,0 +1,183 @@
+#!/bin/bash
+#
+# Vitor Matos - 2012.12.19
+#
+# Install script that executes the instructions on the README for my system.
+# 
+
+echo --------------------------------------
+echo - Automated README file instructions -
+echo --------------------------------------
+while true; do
+	read -p " Do you wish to Continue? (y/n/q) " yn
+	case $yn in
+		  [Yy]* ) break;;
+		  [Nn]* ) exit;;
+		  [Qq]* ) exit;;
+		  * ) echo " Please answer y/n/q.";;
+	esac
+done
+
+# Check if $WEBOTS_HOME exists 
+if [ -z "$WEBOTS_HOME" ]; then
+    echo " Please add WEBOTS_HOME var for Webots path. In my machine: \"/usr/local/webots\" "
+    exit 1
+fi  
+
+# Check if $DARWINOP exists 
+if [ -z "$DARWINOP" ]; then
+    echo " Please add DARWINOP var for Darwin's framework root. In my machine: \"/darwin\"
+    exit 1
+fi  
+
+# Get repository's current dir
+GIT_REPOSITORY="$( cd "$( dirname "$0" )" && pwd )"
+# echo Current dir $GIT_REPOSITORY
+
+# For simulation:
+# 1. Merge the "resources" directory git repository with the "resources" directory of Webots
+# sudo cp -R -v $GIT_REPOSITORY/resources $WEBOTS_HOME
+while true; do
+	echo 
+	read -p " Do you wish to merge the \"resources\" directory git repository with the/ \"resources\" directory of Webots? (y/n/q) " yn
+	case $yn in
+		  [Yy]* ) sudo cp -R -v $GIT_REPOSITORY/resources $WEBOTS_HOME;
+		  				break;;
+		  [Nn]* ) break;;
+		  [Qq]* ) exit;;
+		  * ) echo " Please answer y/n/q.";;
+	esac
+done
+
+# 2. Compile the manager library in Webots resources:
+# sudo make -C $WEBOTS_HOME/resources/projects/robots/darwin-op/lib clean
+# sudo make -C $WEBOTS_HOME/resources/projects/robots/darwin-op/lib WEBOTS_HOME=$WEBOTS_HOME
+while true; do
+	echo 
+	read -p " Do you wish to compile the manager library in Webots resources? (y/n/q) " yn
+	case $yn in
+		  [Yy]* ) sudo make -C $WEBOTS_HOME/resources/projects/robots/darwin-op/lib clean;
+						  sudo make -C $WEBOTS_HOME/resources/projects/robots/darwin-op/lib WEBOTS_HOME=$WEBOTS_HOME;
+		  				break;;
+		  [Nn]* ) break;;
+		  [Qq]* ) exit;;
+		  * ) echo " Please answer y/n/q.";;
+	esac
+done
+
+# 3. Compile a Sample controller
+# make -C $GIT_REPOSITORY/projects/robots/darwin-op/controllers/sample clean
+# make -C $GIT_REPOSITORY/projects/robots/darwin-op/controllers/sample WEBOTS_HOME=$WEBOTS_HOME
+while true; do
+	echo 
+	read -p " Do you wish to compile the sample Webots controller? (y/n/q) " yn
+	case $yn in
+		  [Yy]* ) make -C $GIT_REPOSITORY/projects/robots/darwin-op/controllers/sample clean;
+						  make -C $GIT_REPOSITORY/projects/robots/darwin-op/controllers/sample WEBOTS_HOME=$WEBOTS_HOME;
+		  				break;;
+		  [Nn]* ) break;;
+		  [Qq]* ) exit;;
+		  * ) echo " Please answer y/n/q.";;
+	esac
+done
+
+# webots $GIT_REPOSITORY/projects/robots/darwin-op/worlds/darwin-op.wbt
+while true; do
+	echo 
+	read -p " Run sample controller in Webots? (y/n/q) " yn
+	case $yn in
+		  [Yy]* ) webots $GIT_REPOSITORY/projects/robots/darwin-op/worlds/darwin-op.wbt;
+		  				break;;
+		  [Nn]* ) break;;
+		  [Qq]* ) exit;;
+		  * ) echo " Please answer y/n/q.";;
+	esac
+done
+
+
+# For DARwIn-OP:
+# 1. On the DARwIn-OP, create a /Darwin/Linux/project/webots directory
+#mkdir -v -p $DARWINOP/Linux/project/webots
+
+# 2. Copy-paste the "include", "lib", "transfer", and "src" directories of the $GIT_REPOSITORY/resources/projects/robots/darwin-op directory directly in the /Darwin/Linux/project/webots directory
+#cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/include $DARWINOP/Linux/project/webots
+#cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/lib $DARWINOP/Linux/project/webots
+#cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/transfer $DARWINOP/Linux/project/webots
+#cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/src $DARWINOP/Linux/project/webots
+
+
+# 3. Do the same with the $GIT_REPOSITORY/projects/robots/darwin-op/controllers directory.
+#     Note: From now, on the real DARwIn-OP, you should have these directories:
+#       /Darwin/Linux/project/webots/include
+#       /Darwin/Linux/project/webots/lib
+#       /Darwin/Linux/project/webots/transfer
+#       /Darwin/Linux/project/webots/src
+#       /Darwin/Linux/project/webots/controllers
+# cp -R -v $GIT_REPOSITORY/projects/robots/darwin-op/controllers $DARWINOP/Linux/project/webots
+# ls -1 $DARWINOP/Linux/project/webots
+while true; do
+	echo 
+	read -p " Copy webots project/resources to Darwin's framework dir on local machine? (y/n/q) " yn
+	case $yn in
+		  [Yy]* ) mkdir -v -p $DARWINOP/Linux/project/webots;
+						  cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/include $DARWINOP/Linux/project/webots;
+						  cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/lib $DARWINOP/Linux/project/webots;
+							cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/transfer $DARWINOP/Linux/project/webots;
+							cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/src $DARWINOP/Linux/project/webots;
+		  				cp -R -v $GIT_REPOSITORY/projects/robots/darwin-op/controllers $DARWINOP/Linux/project/webots;
+		  				echo " Contents of $DARWINOP/Linux/project/webots: "
+		  				ls -1 $DARWINOP/Linux/project/webots;
+		  				break;;
+		  [Nn]* ) break;;
+		  [Qq]* ) exit;;
+		  * ) echo " Please answer y/n/q.";;
+	esac
+done
+
+# 4. Compile the wrapper library
+# make -C $DARWINOP/Linux/project/webots/transfer/lib clean
+# make -C $DARWINOP/Linux/project/webots/transfer/lib
+while true; do
+	echo 
+	read -p " Compile wrapper library on local machine? (y/n/q) " yn
+	case $yn in
+		  [Yy]* ) make -C $DARWINOP/Linux/project/webots/transfer/lib clean;
+						  make -C $DARWINOP/Linux/project/webots/transfer/lib;
+		  				break;;
+		  [Nn]* ) break;;
+		  [Qq]* ) exit;;
+		  * ) echo " Please answer y/n/q.";;
+	esac
+done
+
+# 5. Compile the managers library
+# make -C $DARWINOP/Linux/project/webots/lib -f Makefile.darwin-op clean
+# make -C $DARWINOP/Linux/project/webots/lib clean -f Makefile.darwin-op
+while true; do
+	echo 
+	read -p " Compile Darwin's managers library on local machine? (y/n/q) " yn
+	case $yn in
+		  [Yy]* ) make -C $DARWINOP/Linux/project/webots/lib -f Makefile.darwin-op clean;
+						  make -C $DARWINOP/Linux/project/webots/lib clean -f Makefile.darwin-op;
+		  				break;;
+		  [Nn]* ) break;;
+		  [Qq]* ) exit;;
+		  * ) echo " Please answer y/n/q.";;
+	esac
+done
+
+# 6. Compile the controller
+# make -C $DARWINOP/Linux/project/webots/controllers/sample -f Makefile.darwin-op
+while true; do
+	echo 
+	read -p " Compile Darwin's sample controller on local machine? (y/n/q) " yn
+	case $yn in
+		  [Yy]* ) make -C $DARWINOP/Linux/project/webots/controllers/sample -f Makefile.darwin-op clean;
+						  make -C $DARWINOP/Linux/project/webots/controllers/sample -f Makefile.darwin-op;
+		  				break;;
+		  [Nn]* ) break;;
+		  [Qq]* ) exit;;
+		  * ) echo " Please answer y/n/q.";;
+	esac
+done
+

@@ -12,8 +12,8 @@ WorldInfo {
   runRealTime TRUE
 }
 Viewpoint {
-  orientation 0.173742 -0.968733 -0.177116 4.65765
-  position 0.515177 0.604776 -0.420919
+  orientation 0.321926 -0.939931 -0.113549 5.55935
+  position 1.0001 0.606973 1.27965
   follow "DARwIn-OP"
 }
 Background {
@@ -34,6 +34,10 @@ DirectionalLight {
 }
 SoccerField {
 }
+DARwInOP {
+  translation 0 0.345 0
+  controller "sample"
+}
 Walls {
 }
 DEF YELLOW_GOAL Goal {
@@ -46,9 +50,5 @@ DEF BLUE_GOAL Goal {
   postColor 0.152941 0.505882 0.733333
 }
 DEF BALL Ball {
-}
-DARwInOP {
-  translation -0.413972 0.346131 -0.396853
-  rotation 0 1 0 1.0562
-  controller "sample"
+  translation -0.328148 0.0325 0.0765027
 }

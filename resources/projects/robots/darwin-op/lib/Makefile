@@ -55,8 +55,8 @@ endif
 
 clean:
 	rm -f $(TARGET) $(OBJECTS) $(DEPENDENCIES)
-
-$(TARGET): $(OBJECTS)
+	
+$(TARGET): $(OBJECTS)	
 	$(AR) $(TARGET) $(OBJECTS)
 
 %.d:%.cpp
