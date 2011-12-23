@@ -84,9 +84,10 @@ void Sample::run() {
 				printf("[");
 				for (int y = 0; y < image_height; y++) {
 					int r = mCamera->imageGetRed(image, image_width, x, y);
-					int g = mCamera->imageGetGreen(image, image_width, x, y);
-					int b = mCamera->imageGetBlue(image,	image_width, x, y);
-					printf(" r=%d,g=%d,b=%d", r, g, b);
+//					int g = mCamera->imageGetGreen(image, image_width, x, y);
+//					int b = mCamera->imageGetBlue(image,	image_width, x, y);
+//					printf(" r=%d,g=%d,b=%d", r, g, b);
+					printf(" ,%d", r);
 				} 
 				printf(" ]\n");
 			}

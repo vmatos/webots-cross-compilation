@@ -5,7 +5,7 @@
 # script for copying and compiling the controllers
 # 
 
-CONTROLLER=check_angle
+CONTROLLER=camera_test
 GIT_REPOSITORY=/home/hazard/Webots/webots-cross-compilation
 
 while true; do
