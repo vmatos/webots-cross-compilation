@@ -141,6 +141,6 @@ void webots::Robot::initDarwinOP() {
     printf("Fail to connect CM-730!\n");
     exit(EXIT_FAILURE);
   }
-  ::Robot::MotionManager::GetInstance()->Initialize(mCM730);
-  ::Robot::LinuxMotionTimer::Initialize(::Robot::MotionManager::GetInstance());
+//  ::Robot::MotionManager::GetInstance()->Initialize(mCM730);
+//  ::Robot::LinuxMotionTimer::Initialize(::Robot::MotionManager::GetInstance());
 }
