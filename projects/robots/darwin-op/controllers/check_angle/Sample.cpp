@@ -8,6 +8,8 @@
 #include <iostream>
 #include <fstream>
 
+#define WAITS
+
 using namespace webots;
 using namespace std;
 
@@ -66,56 +68,100 @@ void Sample::run() {
   
   wait(200);
   for (int i=0; i<NSERVOS; i++) {
+#ifdef WAITS
   	wait(100);
+#endif
     mServos[i]->setPosition(0.0);
   }  
   printf("All servos at 0.\n");
   wait(1000);
   while (true) {
   	mServos[LegUpperL]->setPosition(0.25);
+#ifdef WAITS
   	wait(100);
+#endif
     mServos[LegUpperR]->setPosition(-0.25);
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[LegLowerL]->setPosition(-0.5);
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[LegLowerR]->setPosition(0.5);
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[AnkleL]->setPosition(-0.25);
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[AnkleR]->setPosition(0.25);
     
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[FootL]->setPosition(0.2);
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[FootR]->setPosition(0.2);
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[PelvL]->setPosition(0.2);
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[PelvR]->setPosition(0.2);
     
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[ShoulderL]->setPosition(-1.54);
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[ShoulderR]->setPosition(1.54);
     
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[ArmUpperL]->setPosition(-.7);
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[ArmUpperR]->setPosition(.7);
     
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[ArmLowerL]->setPosition(1.54);
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[ArmLowerR]->setPosition(-1.54);
     
-    wait(100);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[Neck]->setPosition(1.5);
-    wait(200);
+#ifdef WAITS
+  	wait(100);
+#endif
     mServos[Head]->setPosition(.5);
     
     printf("Check posture of robot\n");
-    wait(10000);
+    wait(5000);
     
+    for (int i=0; i<NSERVOS; i++) {
+	#ifdef WAITS
+			wait(100);
+	#endif
+		  mServos[i]->setPosition(0.0);
+		}  
+    
+    wait(5000);
     
     // step
     myStep();

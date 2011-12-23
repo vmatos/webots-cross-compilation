@@ -150,9 +150,14 @@ void webots::Robot::initDarwinOP() {
     printf("Fail to connect CM-730!\n");
     exit(EXIT_FAILURE);
   }
+<<<<<<< HEAD
 
   mCM730->WriteByte(::Robot::CM730::P_LED_PANNEL, 0x01|0x02|0x04, NULL);
 //  ::Robot::MotionManager::GetInstance()->Initialize(mCM730);
 //  ::Robot::LinuxMotionTimer::Initialize(::Robot::MotionManager::GetInstance());
 //  ::Robot::LinuxActionScript::PlayMP3("../../../Data/mp3/Thank you.mp3");
+=======
+//  ::Robot::MotionManager::GetInstance()->Initialize(mCM730);
+//  ::Robot::LinuxMotionTimer::Initialize(::Robot::MotionManager::GetInstance());
+>>>>>>> Preparing code for testing
 }
