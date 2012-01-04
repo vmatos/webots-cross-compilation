@@ -68,15 +68,16 @@ int main(void) {
     change_current_dir();
 
     //////////////////// Framework Initialize ////////////////////////////
+/*
     if(MotionManager::GetInstance()->Initialize(&cm730) == false)  {
         linux_cm730.SetPortName(U2D_DEV_NAME1);
     }
-
+*/
     /////////////////////////////////////////////////////////////////////
 
     cm730.WriteByte(CM730::P_LED_PANNEL, 0x01|0x02|0x04, NULL);
 
-    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
+    LinuxActionScript::PlayMP3("../../../Data/mp3/Thank you.mp3");
 
     // Wait for 2 seconds
     printf("Wait 2 seconds\n");
