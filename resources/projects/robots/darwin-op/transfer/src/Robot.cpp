@@ -151,6 +151,7 @@ void webots::Robot::initDarwinOP() {
     exit(EXIT_FAILURE);
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   mCM730->WriteByte(::Robot::CM730::P_LED_PANNEL, 0x01|0x02|0x04, NULL);
 //  ::Robot::MotionManager::GetInstance()->Initialize(mCM730);
@@ -160,4 +161,11 @@ void webots::Robot::initDarwinOP() {
 //  ::Robot::MotionManager::GetInstance()->Initialize(mCM730);
 //  ::Robot::LinuxMotionTimer::Initialize(::Robot::MotionManager::GetInstance());
 >>>>>>> Preparing code for testing
+=======
+  
+  mCM730->WriteByte(::Robot::CM730::P_LED_PANNEL, 0x01|0x02|0x04, NULL);
+//  ::Robot::MotionManager::GetInstance()->Initialize(mCM730);
+//  ::Robot::LinuxMotionTimer::Initialize(::Robot::MotionManager::GetInstance());
+//  ::Robot::LinuxActionScript::PlayMP3("../../../Data/mp3/Thank you.mp3");
+>>>>>>> Changed Robot class initialization in constructor.
 }
