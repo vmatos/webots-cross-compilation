@@ -10,10 +10,16 @@ GIT_REPOSITORY=/home/hazard/Webots/webots-cross-compilation
 
 while true; do
 	echo 
-	read -p " Copy webots project to Darwin's framework dir on local machine? (y/n/q) " yn
+	read -p " Copy webots project/resources to Darwin's framework dir on local machine? (y/n/q) " yn
 	case $yn in
-		  [Yy]* ) 
+		  [Yy]* ) mkdir -v -p $DARWINOP/Linux/project/webots;
+						  cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/include $DARWINOP/Linux/project/webots;
+						  cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/lib $DARWINOP/Linux/project/webots;
+							cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/transfer $DARWINOP/Linux/project/webots;
+							cp -R -v $GIT_REPOSITORY/resources/projects/robots/darwin-op/src $DARWINOP/Linux/project/webots;
 		  				cp -R -v $GIT_REPOSITORY/projects/robots/darwin-op/controllers $DARWINOP/Linux/project/webots;
+		  				echo " Contents of $DARWINOP/Linux/project/webots: "
+		  				ls -1 $DARWINOP/Linux/project/webots;
 		  				break;;
 		  [Nn]* ) break;;
 		  [Qq]* ) exit;;

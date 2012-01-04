@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 
-#define WAITS
+//#define WAITS
 
 using namespace webots;
 using namespace std;
