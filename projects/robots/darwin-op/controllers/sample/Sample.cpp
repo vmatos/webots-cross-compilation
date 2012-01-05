@@ -36,7 +36,7 @@ Sample::Sample():
   for (int i=0; i<NSERVOS; i++)
     mServos[i] = getServo(servoNames[i]);
   
-  mMotionManager = new DARwInOPMotionManager(this);
+//  mMotionManager = new DARwInOPMotionManager(this);
   mGaitManager = new DARwInOPGaitManager(this, "config.ini");
 }
 
@@ -97,8 +97,11 @@ void Sample::run() {
   mEyeLED->set(0x10C040);
   
   // play the hello motion
+/*
   mMotionManager->playPage(57); // hello
+  printf("Hello\n");
   mMotionManager->playPage(1); // init position
+  printf("Init pos\n"); */
   wait(200);
 
   // play the motion preparing the robot to walk
@@ -112,13 +115,15 @@ void Sample::run() {
   while (true) {
     double x, y;
     bool ballInFieldOfView = getBallCenter(x, y);
+
+    mGaitManager->setXAmplitude(5.0);
     
     // if the ball is in the field of view,
     // go in the direction of the ball and kick it
     if (ballInFieldOfView) {
       // set eye led to blue
       mEyeLED->set(0x1040C0);
-      
+/*      
       // compute the direction of the head
       // the head move at maximum by 0.01 [rad] at each time step
       x  = 0.01*x + px;
@@ -160,9 +165,10 @@ void Sample::run() {
       
       // move the head vertically
       mServos[19]->setPosition(0.7*sin(2.0*getTime()) + 0.7);
+      */
     }
     
     // step
-    myStep();
+    // myStep();
   }
 }
