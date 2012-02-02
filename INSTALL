@@ -158,7 +158,7 @@ while true; do
 	read -p " Compile Darwin's managers library on local machine? (y/n/q) " yn
 	case $yn in
 		  [Yy]* ) make -C $DARWINOP/Linux/project/webots/lib -f Makefile.darwin-op clean;
-						  make -C $DARWINOP/Linux/project/webots/lib clean -f Makefile.darwin-op;
+						  make -C $DARWINOP/Linux/project/webots/lib -f Makefile.darwin-op;
 		  				break;;
 		  [Nn]* ) break;;
 		  [Qq]* ) exit;;

@@ -30,7 +30,9 @@ INCLUDE_DIRS = -I$(DARWINOP_ROOT)/Linux/include -I$(DARWINOP_ROOT)/Framework/inc
 AR = ar
 ARFLAGS = cr
 CXX = g++
-CXXFLAGS += -c -O2 -DLINUX -Wall $(INCLUDE_DIRS)
+# CXXFLAGS += -c -O2 -DLINUX -Wall $(INCLUDE_DIRS)
+# optimization for athom processor and for size
+CXXFLAGS += -c -Os -march=atom -DLINUX -Wall $(INCLUDE_DIRS)
 DARWINOP_STATIC_LIBRARY = $(DARWINOP_ROOT)/Linux/lib/darwin.a
 
 all: $(TARGET)
