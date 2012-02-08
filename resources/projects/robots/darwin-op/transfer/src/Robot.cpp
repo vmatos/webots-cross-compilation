@@ -8,8 +8,9 @@
 #include "LinuxDARwIn.h"
 
 #include <unistd.h>
-
+#include <errno.h>
 #include <libgen.h>
+#include <time.h>
 
 webots::Robot::Robot() {
   initDarwinOP();
