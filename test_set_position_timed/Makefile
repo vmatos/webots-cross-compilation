@@ -1,13 +1,13 @@
 ###############################################################
 #
-# Purpose: Makefile for "test_set_position"
+# Purpose: Makefile for "test_set_position_timed"
 # Author.: Vitor Matos
 # Version: 0.1
 # License: Give me a beer
 #
 ###############################################################
 
-TARGET = test_set_position
+TARGET = test_set_position_timed
 
 INCLUDE_DIRS = -I../../include -I../../../Framework/include
 
@@ -15,7 +15,7 @@ CXX = g++
 CXXFLAGS += -O2 -DLINUX -Wall $(INCLUDE_DIRS)
 LFLAGS += -pthread -ljpeg -lrt
 
-OBJECTS = ./main.o
+OBJECTS = ./main.cpp ./vsProfileLib.cpp
 
 all: $(TARGET)
 

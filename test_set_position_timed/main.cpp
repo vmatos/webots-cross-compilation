@@ -16,6 +16,10 @@
 #include "LinuxDARwIn.h"
 #include <MX28.h>
 
+#include <iostream>
+
+#include "vsProfileLib.h"
+
 //#include "mjpg_streamer.h"
 
 #define U2D_DEV_NAME0       "/dev/ttyUSB0"
@@ -86,10 +90,14 @@ int main(void) {
     sleep(1);
     
     while(1)    {
+        {
         printf("Go!\n");
         
+        {
+        PROFILE("setPosition 1");
         for(int mID=1; mID <=20; mID++) {
-	        setPosition(mID, 0.4);
+	        setPosition(mID, 0.2);
+	      }
 	      }
         
         printf("Wait 2 seconds\n");
@@ -98,9 +106,11 @@ int main(void) {
 		    sleep(1); 
 		    
 		    printf("Go!\n");
-        
+        {
+        PROFILE("setPosition 2");
         for(int mID=1; mID <=20; mID++) {
 	        setPosition(mID, 0);
+	      }
 	      }       
 	      
         printf("Wait 2 seconds\n");
@@ -109,6 +119,13 @@ int main(void) {
 		    sleep(1); 
 		    
         printf("Loop\n");
+        {
+		      PROFILE("DUMP_PRINT");
+		      std::string s = VSProfileLib::DumpLevels();
+		      std::cout << s << std::endl;
+	      }
+	      PROFILE("Loop");
+	      }
     }
 
     return 0;
