@@ -8,8 +8,9 @@
 #include "LinuxDARwIn.h"
 
 #include <unistd.h>
-
+#include <errno.h>
 #include <libgen.h>
+#include <time.h>
 
 webots::Robot::Robot() {
   initDarwinOP();
@@ -21,8 +22,35 @@ webots::Robot::Robot() {
 webots::Robot::~Robot() {
 }
 
-int webots::Robot::step(int ms) {
-  usleep(ms*1000);
+
+int webots::Robot::step(int milisec) {
+  // at which time did the loop end?
+  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &mEndLoop);
+  // how much time is left to wait to perform the required milisec?
+
+  // Calculate difference
+  mDiffLoop.tv_sec = mEndLoop.tv_sec - mStartLoop.tv_sec; 
+  mDiffLoop.tv_nsec = mEndLoop.tv_nsec - mStartLoop.tv_nsec; 
+  
+  /* Eliminate overflows. */ 
+  while (mDiffLoop.tv_nsec > 1e9L) { 
+    mDiffLoop.tv_nsec -= 1e9L; 
+    mDiffLoop.tv_sec++; 
+  } 
+  /* Eliminate underflows. */ 
+  while (mDiffLoop.tv_nsec < 0L) { 
+    mDiffLoop.tv_nsec += 1e9L; 
+    mDiffLoop.tv_sec--; 
+  }
+
+  mDiffLoop.tv_nsec = milisec*1000000L  - mDiffLoop.tv_nsec;
+  if(mDiffLoop.tv_nsec <= 0) return 1; // no time to wait, execution is lagging
+  
+  // wait the remaining time
+  while(nanosleep(&mDiffLoop,&mDiffLoop)==-1 && errno == EINTR); // repeat with the remaining time if interrupted by signal
+  
+  // save the starting time of the next loop
+  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &mStartLoop);
   return 0;
 }
 

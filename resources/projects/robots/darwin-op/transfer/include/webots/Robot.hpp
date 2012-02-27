@@ -53,6 +53,10 @@ namespace webots {
       struct timeval       mStart;
       double               mPreviousStepTime;
       std::map<const std::string, Device *> mDevices;
+
+      struct timespec      mStartLoop;
+      struct timespec      mEndLoop;
+      struct timespec      mDiffLoop;
   };
 }
 
