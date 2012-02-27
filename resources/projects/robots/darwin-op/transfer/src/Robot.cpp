@@ -75,7 +75,7 @@ int webots::Robot::getMode() const {
 }
 
 double webots::Robot::getBasicTimeStep() const {
-  return 30.0;
+  return 8.0;
 }
 
 webots::Device *webots::Robot::getDevice(const std::string &name) const {
