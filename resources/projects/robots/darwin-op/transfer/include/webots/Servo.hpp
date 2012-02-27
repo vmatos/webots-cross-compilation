@@ -9,10 +9,12 @@
 #ifndef SERVO_HPP
 #define SERVO_HPP
 
+#include <webots/Robot.hpp>
 #include <webots/Device.hpp>
 #include <map>
 
 namespace webots {
+	class Robot;
   class Servo: public Device  {
     public:
                     Servo(const std::string &name, const Robot *robot); //Use Robot::getServo() instead
@@ -20,8 +22,15 @@ namespace webots {
       virtual void  setPosition(double position);
 
     private:
+			bool mTargetChanged;
+			double mTargetPosition;
+			
+			double getTargetPosition();
+      
       static void   initStaticMap();
       static std::map<const std::string, int> mNamesToIDs;
+      
+      friend int Robot::step(int milisec);
   };
 }
 

@@ -5,7 +5,12 @@
 #include <webots/LED.hpp>
 #include <webots/Servo.hpp>
 #include <webots/Device.hpp>
-#include "LinuxDARwIn.h"
+
+#include <LinuxDARwIn.h>
+#include <MX28.h>
+#include <CM730.h>
+
+#include <cmath>
 
 #include <unistd.h>
 #include <errno.h>
@@ -24,6 +29,10 @@ webots::Robot::~Robot() {
 
 
 int webots::Robot::step(int milisec) {
+	
+
+	
+// -------- Actual time stepping --------
   // at which time did the loop end?
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &mEndLoop);
   // how much time is left to wait to perform the required milisec?
@@ -51,6 +60,30 @@ int webots::Robot::step(int milisec) {
   
   // save the starting time of the next loop
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &mStartLoop);
+  
+  
+// -------- Sync Write to actuators --------
+	const int msgLength = 3; // id + low byte + hight byte
+	// latter we could probably include PID / maxForce / compliance parameters. 
+	int param[20*msgLength]; 
+	int n=0;
+	int changed_servos=0;
+	int value;
+	std::map<const std::string, int>::iterator servo_it;
+	
+	for(servo_it = Servo::mNamesToIDs.begin() ; servo_it != Servo::mNamesToIDs.end(); servo_it++  ) {
+		if( ((Servo *) mDevices[(*servo_it).first])->mTargetChanged == true ) {
+			value = ::Robot::MX28::Angle2Value( ((Servo *) mDevices[(*servo_it).first])->getTargetPosition()*180.0/M_PI );
+			if(value >= 0 && value <= ::Robot::MX28::MAX_VALUE) {
+				param[n++] = (*servo_it).second;
+				param[n++] = ::Robot::CM730::GetLowByte(value);
+				param[n++] = ::Robot::CM730::GetHighByte(value);
+				changed_servos++;
+			}
+		}
+	}
+	getCM730()->SyncWrite(::Robot::MX28::P_GOAL_POSITION_L, msgLength, changed_servos , param);	
+	
   return 0;
 }
 

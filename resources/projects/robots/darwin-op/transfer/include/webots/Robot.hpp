@@ -14,6 +14,7 @@
 #include <sys/time.h>
 
 namespace Robot {
+	class MX28;
   class CM730;
   class LinuxCM730;
 }

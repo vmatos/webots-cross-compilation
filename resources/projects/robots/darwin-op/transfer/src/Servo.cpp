@@ -2,9 +2,6 @@
 #include <webots/Robot.hpp>
 
 #include <JointData.h>
-#include <MX28.h>
-#include <CM730.h>
-#include <cmath>
 
 using namespace webots;
 using namespace Robot;
@@ -15,6 +12,8 @@ Servo::Servo(const std::string &name, const Robot *robot) :
   Device(name, robot)
 {
   initStaticMap();
+  mTargetPosition = 0;
+  mTargetChanged = false;
 }
 
 Servo::~Servo() {
@@ -50,11 +49,11 @@ void Servo::initStaticMap() {
 }
 
 void Servo::setPosition(double position) {
-  CM730 *cm730 = getRobot()->getCM730();
-  int value = MX28::Angle2Value(position*180.0/M_PI);
+  mTargetPosition = position;
+  mTargetChanged = true;
+}
 
-  if(value >= 0 && value <= MX28::MAX_VALUE) {
-    int error;
-    cm730->WriteWord(mNamesToIDs[getName()], MX28::P_GOAL_POSITION_L, value, &error);
-  }
+double Servo::getTargetPosition() {
+	mTargetChanged = false;
+	return mTargetPosition;
 }
