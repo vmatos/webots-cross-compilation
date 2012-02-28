@@ -48,6 +48,9 @@ void Servo::initStaticMap() {
   }
 }
 
+void Servo::enablePosition(int ms) {
+}
+
 void Servo::setPosition(double position) {
   mTargetPosition = position;
   mTargetChanged = true;

@@ -29,9 +29,6 @@ webots::Robot::~Robot() {
 
 
 int webots::Robot::step(int milisec) {
-	
-
-	
 // -------- Actual time stepping --------
   // at which time did the loop end?
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &mEndLoop);
@@ -62,6 +59,21 @@ int webots::Robot::step(int milisec) {
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &mStartLoop);
   
   
+// -------- Read table from CM730 regarding body sensors --------
+	// read table from:  P_GYRO_Z_L 	38 (0x26) 
+	// to: P_ACCEL_Z_H 	49 (0x31)
+	int values[3];
+	if( getCM730()->ReadTable(::Robot::CM730::ID_CM, ::Robot::CM730::P_GYRO_Z_L, ::Robot::CM730::P_VOLTAGE, mControlTable ,0) == ::Robot::CM730::SUCCESS) {
+		values[0] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_GYRO_Z_L], mControlTable[::Robot::CM730::P_GYRO_Z_L+1]);
+		values[1] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_GYRO_Y_L], mControlTable[::Robot::CM730::P_GYRO_Y_L+1]);
+		values[2] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_GYRO_X_L], mControlTable[::Robot::CM730::P_GYRO_X_L+1]);
+		((Gyro *)mDevices["Gyro"])->setValues(values);
+		values[0] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_ACCEL_X_L], mControlTable[::Robot::CM730::P_ACCEL_X_L+1]);
+		values[1] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_ACCEL_Y_L], mControlTable[::Robot::CM730::P_ACCEL_Y_L+1]);
+		values[2] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_ACCEL_Z_L], mControlTable[::Robot::CM730::P_ACCEL_Z_L+1]);
+		((Accelerometer *)mDevices["Accelerometer"])->setValues(values);
+	} 
+
 // -------- Sync Write to actuators --------
 	const int msgLength = 3; // id + low byte + hight byte
 	// latter we could probably include PID / maxForce / compliance parameters. 

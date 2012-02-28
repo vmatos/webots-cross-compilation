@@ -20,6 +20,7 @@ namespace webots {
                     Servo(const std::string &name, const Robot *robot); //Use Robot::getServo() instead
       virtual      ~Servo();
       virtual void  setPosition(double position);
+      virtual void	enablePosition(int ms);
 
     private:
 			bool mTargetChanged;

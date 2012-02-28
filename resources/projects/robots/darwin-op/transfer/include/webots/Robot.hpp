@@ -54,6 +54,8 @@ namespace webots {
       struct timeval       mStart;
       double               mPreviousStepTime;
       std::map<const std::string, Device *> mDevices;
+      
+      unsigned char 			 mControlTable[128];
 
       struct timespec      mStartLoop;
       struct timespec      mEndLoop;
