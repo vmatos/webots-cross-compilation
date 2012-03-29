@@ -32,7 +32,7 @@ ARFLAGS = cr
 CXX = g++
 # CXXFLAGS += -c -O2 -DLINUX -Wall $(INCLUDE_DIRS)
 # optimization for athom processor and for size
-CXXFLAGS += -c -Os -march=atom -DLINUX -Wall $(INCLUDE_DIRS)
+CXXFLAGS += -c -Os -m32 -march=atom -DLINUX -Wall $(INCLUDE_DIRS)
 DARWINOP_STATIC_LIBRARY = $(DARWINOP_ROOT)/Linux/lib/darwin.a
 
 all: $(TARGET)

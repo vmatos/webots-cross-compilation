@@ -32,8 +32,8 @@ CXX_SOURCES = \
 
 INCLUDE_DIRS = -I$(DARWINOP_ROOT)/Linux/include -I$(DARWINOP_ROOT)/Framework/include -I$(WEBOTS_DARWINOP_PROJECT_ROOT)/transfer/include -I$(WEBOTS_DARWINOP_PROJECT_ROOT)/include
 CXX = g++
-CXXFLAGS += -Os -march=atom -DLINUX -DCROSSCOMPILATION -Wall $(INCLUDE_DIRS)
-LFLAGS += -pthread -ljpeg -lrt
+CXXFLAGS += -Os -march=atom -m32 -DLINUX -DCROSSCOMPILATION -Wall $(INCLUDE_DIRS)
+LFLAGS += -m32 -pthread -ljpeg -lrt
 WRAPPER = $(WEBOTS_DARWINOP_PROJECT_ROOT)/transfer/lib/wrapper.a
 DARWINOP_STATIC_LIBRARY = $(DARWINOP_ROOT)/Linux/lib/darwin.a
 OBJECTS = $(CXX_SOURCES:.cpp=.o)
