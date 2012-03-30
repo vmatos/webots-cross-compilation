@@ -58,21 +58,29 @@ int webots::Robot::step(int milisec) {
   // save the starting time of the next loop
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &mStartLoop);
   
+   
+// -------- BulkRead --------
+  mCM730->BulkRead();
+  // get gyro from bulk read table from CM730 device
+  int values[3];
+  values[0] = mCM730->m_BulkReadData[::Robot::CM730::ID_CM].ReadWord(::Robot::CM730::P_GYRO_Z_L);
+  values[1] = mCM730->m_BulkReadData[::Robot::CM730::ID_CM].ReadWord(::Robot::CM730::P_GYRO_Y_L);
+  values[2] = mCM730->m_BulkReadData[::Robot::CM730::ID_CM].ReadWord(::Robot::CM730::P_GYRO_X_L);
+  ((Gyro *)mDevices["Gyro"])->setValues(values);
+  // get accelerometer from bulk read table from CM730 device
+  values[0] = mCM730->m_BulkReadData[::Robot::CM730::ID_CM].ReadWord(::Robot::CM730::P_ACCEL_X_L);
+  values[1] = mCM730->m_BulkReadData[::Robot::CM730::ID_CM].ReadWord(::Robot::CM730::P_ACCEL_Y_L);
+  values[2] = mCM730->m_BulkReadData[::Robot::CM730::ID_CM].ReadWord(::Robot::CM730::P_ACCEL_Z_L);
+  ((Accelerometer *)mDevices["Accelerometer"])->setValues(values);
   
-// -------- Read table from CM730 regarding body sensors --------
-	// read table from:  P_GYRO_Z_L 	38 (0x26) 
-	// to: P_ACCEL_Z_H 	49 (0x31)
-	int values[3];
-	if( getCM730()->ReadTable(::Robot::CM730::ID_CM, ::Robot::CM730::P_GYRO_Z_L, ::Robot::CM730::P_VOLTAGE, mControlTable ,0) == ::Robot::CM730::SUCCESS) {
-		values[0] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_GYRO_Z_L], mControlTable[::Robot::CM730::P_GYRO_Z_L+1]);
-		values[1] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_GYRO_Y_L], mControlTable[::Robot::CM730::P_GYRO_Y_L+1]);
-		values[2] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_GYRO_X_L], mControlTable[::Robot::CM730::P_GYRO_X_L+1]);
-		((Gyro *)mDevices["Gyro"])->setValues(values);
-		values[0] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_ACCEL_X_L], mControlTable[::Robot::CM730::P_ACCEL_X_L+1]);
-		values[1] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_ACCEL_Y_L], mControlTable[::Robot::CM730::P_ACCEL_Y_L+1]);
-		values[2] = ::Robot::CM730::MakeWord(mControlTable[::Robot::CM730::P_ACCEL_Z_L], mControlTable[::Robot::CM730::P_ACCEL_Z_L+1]);
-		((Accelerometer *)mDevices["Accelerometer"])->setValues(values);
-	} 
+  // Get joint positions from bulk read table of each MX28 device
+  std::map<const std::string, int>::iterator servo_it;
+  
+  for(servo_it = Servo::mNamesToIDs.begin() ; servo_it != Servo::mNamesToIDs.end(); servo_it++  ) {
+    ((Servo *) mDevices[(*servo_it).first])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[(*servo_it).second].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L) 
+      )*M_PI/180 );
+  }
 
 // -------- Sync Write to actuators --------
 	const int msgLength = 3; // id + low byte + hight byte
@@ -81,7 +89,6 @@ int webots::Robot::step(int milisec) {
 	int n=0;
 	int changed_servos=0;
 	int value;
-	std::map<const std::string, int>::iterator servo_it;
 	
 	for(servo_it = Servo::mNamesToIDs.begin() ; servo_it != Servo::mNamesToIDs.end(); servo_it++  ) {
 		if( ((Servo *) mDevices[(*servo_it).first])->mTargetChanged == true ) {
@@ -225,6 +232,8 @@ void webots::Robot::initDarwinOP() {
   }
 
   mCM730->WriteByte(::Robot::CM730::P_LED_PANNEL, 0x01|0x02|0x04, NULL);
+  
+  mCM730->MakeBulkReadPacket();
 //  ::Robot::MotionManager::GetInstance()->Initialize(mCM730);
 //  ::Robot::LinuxMotionTimer::Initialize(::Robot::MotionManager::GetInstance());
 //  ::Robot::LinuxActionScript::PlayMP3("../../../Data/mp3/Thank you.mp3");

@@ -56,6 +56,14 @@ void Servo::setPosition(double position) {
   mTargetChanged = true;
 }
 
+double Servo::getPosition() {
+  return mCurrentPosition;
+}
+
+void Servo::setCurrentPosition(double current) {
+  mCurrentPosition = current;
+}
+
 double Servo::getTargetPosition() {
 	mTargetChanged = false;
 	return mTargetPosition;

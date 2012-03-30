@@ -20,13 +20,16 @@ namespace webots {
                     Servo(const std::string &name, const Robot *robot); //Use Robot::getServo() instead
       virtual      ~Servo();
       virtual void  setPosition(double position);
+      virtual double getPosition();
       virtual void	enablePosition(int ms);
 
     private:
 			bool mTargetChanged;
 			double mTargetPosition;
+      double mCurrentPosition;
 			
 			double getTargetPosition();
+      void setCurrentPosition(double current);
       
       static void   initStaticMap();
       static std::map<const std::string, int> mNamesToIDs;
