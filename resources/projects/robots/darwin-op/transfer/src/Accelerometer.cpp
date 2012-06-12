@@ -5,17 +5,13 @@ using namespace webots;
 
 Accelerometer::Accelerometer(const std::string &name, const Robot *robot) :
   Device(name, robot)
-{
-}
+{ }
 
-Accelerometer::~Accelerometer() {
-}
+Accelerometer::~Accelerometer() { }
 
-void Accelerometer::enable(int ms) {
-}
+void Accelerometer::enable(int ms) { }
 
-void Accelerometer::disable() {
-}
+void Accelerometer::disable() { }
 
 void Accelerometer::setValues(const int *integerValues) {
 	for (int i=0; i<3; i++)

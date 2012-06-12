@@ -4,6 +4,7 @@
 #include <webots/Gyro.hpp>
 #include <webots/LED.hpp>
 #include <webots/Servo.hpp>
+#include <webots/TouchSensor.hpp>
 #include <webots/Device.hpp>
 
 #include <LinuxDARwIn.h>
@@ -72,6 +73,27 @@ int webots::Robot::step(int milisec) {
   values[1] = mCM730->m_BulkReadData[::Robot::CM730::ID_CM].ReadWord(::Robot::CM730::P_ACCEL_Y_L);
   values[2] = mCM730->m_BulkReadData[::Robot::CM730::ID_CM].ReadWord(::Robot::CM730::P_ACCEL_Z_L);
   ((Accelerometer *)mDevices["Accelerometer"])->setValues(values);
+  
+  // get FSR force values from bulk read table from CM730 device  
+  int fsr_value;
+  fsr_value = mCM730->m_BulkReadData[::Robot::FSR::ID_L_FSR].ReadWord(::Robot::FSR::P_FSR1_L);
+  ((TouchSensor *)mDevices["FootL_FL_FSR"])->setValue(fsr_value);
+  fsr_value = mCM730->m_BulkReadData[::Robot::FSR::ID_L_FSR].ReadWord(::Robot::FSR::P_FSR2_L);
+  ((TouchSensor *)mDevices["FootL_FR_FSR"])->setValue(fsr_value);
+  fsr_value = mCM730->m_BulkReadData[::Robot::FSR::ID_L_FSR].ReadWord(::Robot::FSR::P_FSR3_L);
+  ((TouchSensor *)mDevices["FootL_BL_FSR"])->setValue(fsr_value);
+  fsr_value = mCM730->m_BulkReadData[::Robot::FSR::ID_L_FSR].ReadWord(::Robot::FSR::P_FSR4_L);
+  ((TouchSensor *)mDevices["FootL_BR_FSR"])->setValue(fsr_value);
+  
+  fsr_value = mCM730->m_BulkReadData[::Robot::FSR::ID_R_FSR].ReadWord(::Robot::FSR::P_FSR1_L);
+  ((TouchSensor *)mDevices["FootR_FL_FSR"])->setValue(fsr_value);
+  fsr_value = mCM730->m_BulkReadData[::Robot::FSR::ID_R_FSR].ReadWord(::Robot::FSR::P_FSR2_L);
+  ((TouchSensor *)mDevices["FootR_FR_FSR"])->setValue(fsr_value);
+  fsr_value = mCM730->m_BulkReadData[::Robot::FSR::ID_R_FSR].ReadWord(::Robot::FSR::P_FSR3_L);
+  ((TouchSensor *)mDevices["FootR_BL_FSR"])->setValue(fsr_value);
+  fsr_value = mCM730->m_BulkReadData[::Robot::FSR::ID_R_FSR].ReadWord(::Robot::FSR::P_FSR4_L);
+  ((TouchSensor *)mDevices["FootR_BR_FSR"])->setValue(fsr_value);
+  
   
   // Get joint positions from bulk read table of each MX28 device
   std::map<const std::string, int>::iterator servo_it;
@@ -188,6 +210,16 @@ webots::LED *webots::Robot::getLED(const std::string &name) const {
   return NULL;
 }
 
+webots::TouchSensor *webots::Robot::getTouchSensor(const std::string &name) const {
+  webots::Device *device = getDevice(name);
+  if (device) {
+    webots::TouchSensor *touch = dynamic_cast<webots::TouchSensor *> (device);
+    if (touch)
+      return touch;
+  }
+  return NULL;
+}
+
 void webots::Robot::initDevices() {
   mDevices["Accelerometer"] = new webots::Accelerometer("Accelerometer", this);
   mDevices["Camera"]        = new webots::Camera       ("Camera",        this);
@@ -214,6 +246,14 @@ void webots::Robot::initDevices() {
   mDevices["FootL"]         = new webots::Servo        ("FootL",         this);
   mDevices["Neck"]          = new webots::Servo        ("Neck",          this);
   mDevices["Head"]          = new webots::Servo        ("Head",          this);
+  mDevices["FootL_FL_FSR"]  = new webots::TouchSensor  ("FootL_FL_FSR",  this);
+  mDevices["FootL_FR_FSR"]  = new webots::TouchSensor  ("FootL_FR_FSR",  this);
+  mDevices["FootL_BL_FSR"]  = new webots::TouchSensor  ("FootL_BL_FSR",  this);
+  mDevices["FootL_BR_FSR"]  = new webots::TouchSensor  ("FootL_BR_FSR",  this);
+  mDevices["FootR_FL_FSR"]  = new webots::TouchSensor  ("FootR_FL_FSR",  this);
+  mDevices["FootR_FR_FSR"]  = new webots::TouchSensor  ("FootR_FR_FSR",  this);
+  mDevices["FootR_BL_FSR"]  = new webots::TouchSensor  ("FootR_BL_FSR",  this);
+  mDevices["FootR_BR_FSR"]  = new webots::TouchSensor  ("FootR_BR_FSR",  this);
 }
 
 void webots::Robot::initDarwinOP() {

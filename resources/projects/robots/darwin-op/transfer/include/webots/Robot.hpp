@@ -25,6 +25,7 @@ namespace webots {
   class Camera;
   class Gyro;
   class LED;
+  class TouchSensor;
   class Servo;
   
   class Robot {
@@ -40,6 +41,7 @@ namespace webots {
       Camera              *getCamera(const std::string &name) const;
       Gyro                *getGyro(const std::string &name) const;
       LED                 *getLED(const std::string &name) const;
+      TouchSensor         *getTouchSensor(const std::string &name) const;
       Servo               *getServo(const std::string &name) const;
       
       ::Robot::CM730      *getCM730() const { return mCM730; }

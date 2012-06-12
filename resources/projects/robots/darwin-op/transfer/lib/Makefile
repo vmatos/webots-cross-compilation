@@ -23,6 +23,7 @@ CXX_SOURCES = \
   ../src/LED.cpp \
   ../src/Accelerometer.cpp \
   ../src/Gyro.cpp \
+  ../src/TouchSensor.cpp \
   ../src/Camera.cpp 
 OBJECTS = $(CXX_SOURCES:.cpp=.o)
 INCLUDE_DIRS = -I$(DARWINOP_ROOT)/Linux/include -I$(DARWINOP_ROOT)/Framework/include -I../include

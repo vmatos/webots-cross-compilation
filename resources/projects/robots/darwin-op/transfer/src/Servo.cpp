@@ -16,8 +16,7 @@ Servo::Servo(const std::string &name, const Robot *robot) :
   mTargetChanged = false;
 }
 
-Servo::~Servo() {
-}
+Servo::~Servo() { }
 
 void Servo::initStaticMap() {
   static bool firstCall=true;
@@ -48,8 +47,7 @@ void Servo::initStaticMap() {
   }
 }
 
-void Servo::enablePosition(int ms) {
-}
+void Servo::enablePosition(int ms) { }
 
 void Servo::setPosition(double position) {
   mTargetPosition = position;
