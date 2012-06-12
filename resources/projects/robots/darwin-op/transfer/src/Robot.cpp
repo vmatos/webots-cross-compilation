@@ -97,12 +97,43 @@ int webots::Robot::step(int milisec) {
   
   // Get joint positions from bulk read table of each MX28 device
   std::map<const std::string, int>::iterator servo_it;
-  
+  /*
   for(servo_it = Servo::mNamesToIDs.begin() ; servo_it != Servo::mNamesToIDs.end(); servo_it++  ) {
     ((Servo *) mDevices[(*servo_it).first])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
         mCM730->m_BulkReadData[(*servo_it).second].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L) 
       )*M_PI/180 );
-  }
+  } 
+  */
+  // instead of returning all servo positions, return just the ones that matter to us
+   ((Servo *) mDevices["PelvYR"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_R_HIP_YAW].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
+   ((Servo *) mDevices["PelvYL"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_L_HIP_YAW].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
+   
+   ((Servo *) mDevices["PelvR"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_R_HIP_ROLL].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
+   ((Servo *) mDevices["PelvL"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_L_HIP_ROLL].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
+   
+   ((Servo *) mDevices["LegUpperR"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_R_HIP_PITCH].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
+   ((Servo *) mDevices["LegUpperL"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_L_HIP_PITCH].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
+        
+   ((Servo *) mDevices["LegLowerR"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_R_KNEE].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
+   ((Servo *) mDevices["LegLowerL"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_L_KNEE].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
+   
+   ((Servo *) mDevices["AnkleR"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_R_ANKLE_PITCH].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
+   ((Servo *) mDevices["AnkleL"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_L_ANKLE_PITCH].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
+  
+   ((Servo *) mDevices["FootR"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_R_ANKLE_ROLL].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
+   ((Servo *) mDevices["FootL"])->setCurrentPosition( ::Robot::MX28::Value2Angle( 
+        mCM730->m_BulkReadData[::Robot::JointData::ID_L_ANKLE_ROLL].ReadWord(::Robot::MX28::P_PRESENT_POSITION_L)  )*M_PI/180 );
 
 // -------- Sync Write to actuators --------
 	const int msgLength = 3; // id + low byte + hight byte
