@@ -23,6 +23,7 @@ namespace webots {
       
       double getValue() const;
       
+    private:
       double m_Value;
       void setValue(int intengerValue);
 
